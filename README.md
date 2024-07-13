@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/8681833d-ff9d-42c5-94b7-61053c00a923)## EtherArt NFT Marketplace
+## EtherArt NFT Marketplace
 Main page
 ![image](https://github.com/user-attachments/assets/961ef528-2ffc-4437-b91d-d9fd00a06de8)
 ![image](https://github.com/user-attachments/assets/6fbb17b5-9dae-4ee8-992a-e03d9aa30d92)
