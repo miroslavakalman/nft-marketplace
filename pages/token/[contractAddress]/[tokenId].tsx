@@ -196,7 +196,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
     // Логируем передаваемые значения
     console.log(`Fetching NFT with tokenId: ${tokenId} from contractAddress: ${contractAddress}`);
 
-    const response = await fetch(`http://localhost:3000/api/nft/${contractAddress}`, {
+    const response = await fetch(`https://nft-marketplace-ten-pi.vercel.app/api/nft/${contractAddress}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
