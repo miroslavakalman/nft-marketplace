@@ -153,11 +153,12 @@ export default function TokenPage({ nft, contractMetadata }: Props) {
                         </Skeleton>
                     </Stack>
                     <Skeleton isLoaded={!loadingDirectListing || !loadingAuction}>
-                        <Web3Button
-                            contractAddress={process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS}
-                            action={async () => buyListing()}
-                            isDisabled={(!auctionListing || !auctionListing[0]) && (!directListing || !directListing[0])}
-                        >
+                    <Web3Button
+                        contractAddress={process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS!}
+                        action={async () => buyListing()}
+                        isDisabled={(!auctionListing || !auctionListing[0]) && (!directListing || !directListing[0])}
+                    >
+
                             Приобрести по цене выкупа
                         </Web3Button>
                         <Text align={"center"}>или</Text>
@@ -168,11 +169,12 @@ export default function TokenPage({ nft, contractMetadata }: Props) {
                                 type={"number"}
                                 onChange={(e) => setBidValue(e.target.value)}
                             />
-                            <Web3Button
-                                contractAddress={process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS}
-                                action={async () => await createBidOffer()}
-                                isDisabled={!auctionListing || !auctionListing[0]}
-                            >
+                         <Web3Button
+                            contractAddress={process.env.NEXT_PUBLIC_MARKETPLACE_ADDRESS!}
+                            action={async () => buyListing()}
+                            isDisabled={(!auctionListing || !auctionListing[0]) && (!directListing || !directListing[0])}
+                        >
+
                                 Разместить ставку
                             </Web3Button>
                         </Flex>
