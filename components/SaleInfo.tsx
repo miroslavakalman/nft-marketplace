@@ -112,22 +112,22 @@ export default function SaleInfo({ nft }: Props) {
     return (
         <Tabs>
             <TabList>
-                <Tab>Direct</Tab>
-                <Tab>Auction</Tab>
+                <Tab>Листинг</Tab>
+                <Tab>Аукцион</Tab>
             </TabList>
             <TabPanels>
                 <TabPanel>
                 <Stack spacing={8}>
             <Box>
-                <Text fontWeight={"bold"} mb={2}>Direct Listing</Text>
-                <Text>Listing starts on:</Text>
+                <Text fontWeight={"bold"} mb={2}>Листинг</Text>
+                <Text>Начало листинга:</Text>
                 <Input
                     placeholder="Select Date and Time"
                     size="md"
                     type="datetime-local"
                     {...registerDirect("startDate")}
                     />
-                    <Text mt={2}>Listing ends on:</Text>
+                    <Text mt={2}>Окончание листинга:</Text>
                     <Input
                         placeholder="Select Date and Time"
                         size="md"
@@ -136,7 +136,7 @@ export default function SaleInfo({ nft }: Props) {
                     />
             </Box>
             <Box>
-                <Text fontWeight={"bold"}>Price:</Text>
+                <Text fontWeight={"bold"}>Стоимость в ETH:</Text>
                 <Input
                     placeholder="0"
                     size="md"
@@ -152,22 +152,22 @@ export default function SaleInfo({ nft }: Props) {
                 onSuccess={(txResult) => {
                     router.push(`/token/${NFT_COLLECTION_ADDRESS}/${nft.metadata.id}`);
                 }}
-                >Create Direct Listing</Web3Button>
+                >Создать листинг</Web3Button>
 
         </Stack>
                 </TabPanel>
                 <TabPanel>
                 <Stack spacing={8}>
             <Box>
-                <Text fontWeight={"bold"} mb={2}>Auction Listing</Text>
-                <Text>Listing starts on:</Text>
+                <Text fontWeight={"bold"} mb={2}>Аукцион</Text>
+                <Text>Начало:</Text>
                 <Input
                     placeholder="Select Date and Time"
                     size="md"
                     type="datetime-local"
                     {...registerAuction("startDate")}
                     />
-                    <Text mt={2}>Listing ends on:</Text>
+                    <Text mt={2}>Окончание:</Text>
                     <Input
                         placeholder="Select Date and Time"
                         size="md"
@@ -176,7 +176,7 @@ export default function SaleInfo({ nft }: Props) {
                     />
             </Box>
             <Box>
-                <Text fontWeight={"bold"}>Starting bid from:</Text>
+                <Text fontWeight={"bold"}>Минимальная ставка:</Text>
                 <Input
                     placeholder="0"
                     size="md"
@@ -185,7 +185,7 @@ export default function SaleInfo({ nft }: Props) {
                     />
             </Box>
             <Box>
-                <Text fontWeight={"bold"}>Buyout price:</Text>
+                <Text fontWeight={"bold"}>Цена выкупа:</Text>
                 <Input
                     placeholder="0"
                     size="md"
@@ -201,7 +201,7 @@ export default function SaleInfo({ nft }: Props) {
                 onSuccess={(txResult) => {
                     router.push(`/token/${NFT_COLLECTION_ADDRESS}/${nft.metadata.id}`);
                 }}
-                >Create Auction Listing</Web3Button>
+                >Создать аукцион</Web3Button>
 
         </Stack>
                 </TabPanel>

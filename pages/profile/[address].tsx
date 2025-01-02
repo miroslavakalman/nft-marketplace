@@ -16,12 +16,12 @@ export default function ProfilePage() {
     );
     return (
         <Container maxW={"1200"} p={5}>
-            <Heading fontFamily={"Silkscreen"}>{"Owned NFT(s)"}</Heading>
-            <Text>Browse and manage your NFTs from this collection.</Text>
+            <Heading fontFamily={"Silkscreen"}>{"NFT(s)"}</Heading>
+            <Text>Управляйте своими NFT из нашей коллекции.</Text>
             <NFTGrid
             data={ownedNfts}
             isLoading={loadingOwnedNfts}
-            emptyText={"You don't own any NFTs yet from this collection"}
+            emptyText={"Вы не владеете NFT"}
             />
         </Container>
 

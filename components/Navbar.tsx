@@ -4,33 +4,44 @@ import NextLink from 'next/link';
 
 export const Navbar = () => {
     const address = useAddress();
-    
+
     return (
-        <Box maxW={"100%"} m={"auto"} py={"10px"} px={"40px"} bg={"black"} color={"#E6BEAE"}>
-            <Flex justifyContent={"space-between"} alignItems={"center"}>
+        <Box maxW={"100%"} m={"auto"} py={"10px"} px={"20px"} bg={"black"} color={"#E6BEAE"} className="navigation-comp">
+            {/* Flex container for Navbar */}
+            <Flex direction={{ base: "column", md: "row" }} justifyContent={"space-between"} alignItems={"center"} gap={4}>
+                {/* Logo */}
                 <Link as={NextLink} href='/'>
                     <Heading fontFamily={"Silkscreen"} fontWeight={"400"}>EtherArt</Heading>
                 </Link>
-                <Flex direction={"row"}>
-                <Link as={NextLink} href='/buy' mx={2.5}>
-                    <Text>Explore</Text>
-                </Link>
-                <Link as={NextLink} href='/buy' mx={2.5}>
-                    <Text>BUY</Text>
-                </Link>
-                <Link as={NextLink} href='/sell' mx={2.5}>
-                    <Text>SELL</Text>
-                </Link>
+
+                {/* Navigation links */}
+                <Flex 
+                    direction={{ base: "column", md: "row" }} 
+                    alignItems={{ base: "center", md: "flex-start" }} 
+                    gap={{ base: 2, md: 4 }}
+                >
+                    <Link as={NextLink} href='/buy'>
+                        <Text>Купить NFT</Text>
+                    </Link>
+                    <Link as={NextLink} href='/sell'>
+                        <Text>Продать NFT</Text>
+                    </Link>
+                    <Link as={NextLink} href="/admin">
+                    <Text>Администраторам</Text>
+                    </Link>
+                    
                 </Flex>
-                <Flex dir={"row"} alignItems={"center"}>
-                    <ConnectWallet/>
+
+                {/* Wallet and Profile */}
+                <Flex direction={{ base: "column", md: "row" }} alignItems={"center"} gap={2}>
+                    <ConnectWallet />
                     {address && (
                         <Link as={NextLink} href={`/profile/${address}`}>
-                            <Avatar src='https://bit.ly/broken-link' ml={"20px"}/>
+                            <Avatar src='https://bit.ly/broken-link' />
                         </Link>
                     )}
                 </Flex>
             </Flex>
         </Box>
-    )
-}
+    );
+};

@@ -15,8 +15,8 @@ export default function Sell() {
 
     return (
         <Container maxW={"1200px"} p={5}>
-            <Heading fontFamily={"Silkscreen"}>Sell</Heading>
-            <Text>Select which NFT to sell below.</Text>
+            <Heading fontFamily={"Silkscreen"}>Listings & Auctions</Heading>
+            <Text>Выберите NFT для продажи.</Text>
             {!selectedNFT ? ( 
                 <NFTGrid
                     data={data}
@@ -28,7 +28,7 @@ export default function Sell() {
                     />
             ) : (
                 <Flex justifyContent={"center"} my={10}>
-                    <Card w={"75%"}>
+                    <Card w={"75%"}  background={"black"}>
                         <SimpleGrid columns={2} spacing={10} p={5}>
                             <ThirdwebNftMedia
                             metadata={selectedNFT.metadata}

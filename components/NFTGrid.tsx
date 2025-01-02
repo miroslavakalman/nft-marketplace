@@ -16,7 +16,7 @@ export default function NFTGrid({
     isLoading,
     data,
     overrideOnclickBehavior,
-    emptyText = "No NFT's found",
+    emptyText = "NFT не найдено",
 }: Props) {
     return (
         <SimpleGrid columns={4} spacing={6} w={"100"} padding={2.5} my={5}>

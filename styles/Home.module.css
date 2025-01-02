@@ -143,3 +143,20 @@
 .logo img {
   filter: invert(1);
 }
+
+@media (min-width: 340px) and (max-width: 1024px) {
+  .heading-ether{
+    font-size: 80px;
+  }
+  .navigation-comp{
+    display: flex;
+    flex-direction: column;
+  }
+  p{
+    height: auto !important;
+    width: auto !important;
+  }
+  .css-1lu5iqd{
+    display: block !important;
+  }
+}
