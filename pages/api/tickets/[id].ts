@@ -15,7 +15,7 @@ const mg = mailgun.client({
 const sendEmailReply = async (email: string, subject: string, text: string) => {
   try {
     await mg.messages.create(process.env.MAILGUN_DOMAIN!, {
-      from: `Администратор EtherArt <admin@${process.env.MAILGUN_DOMAIN}>`, // Указываем отправителя
+      from: `Администратор EtherArt <postmaster@etherart.ru>`, // Указываем отправителя
       to: [email],
       subject,
       text,
