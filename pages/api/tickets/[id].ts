@@ -4,25 +4,26 @@ import formData from "form-data";
 import Mailgun from "mailgun.js";
 import Ticket from "../../../models/Ticket"; // Модель тикета
 
-// Создаем Mailgun клиент
 const mailgun = new Mailgun(formData);
-const mg = mailgun.client({
-  username: "api",
-  key: process.env.NEXT_PUBLIC_MAILGUN_API_KEY!,
-});
 
 // Функция для отправки email
-const sendEmailReply = async (email: string, subject: string, text: string) => {
+const sendEmailReply = async (email, subject, text) => {
+  const mg = mailgun.client({
+    username: "api",
+    key: process.env.MAILGUN_API_KEY,
+  });
+
   try {
-    await mg.messages.create(process.env.MAILGUN_DOMAIN!, {
-      from: `Администратор EtherArt <postmaster@etherart.ru>`, // Указываем отправителя
+    const response = await mg.messages.create(process.env.MAILGUN_DOMAIN!, {
+      from: `Администратор EtherArt <postmaster@${process.env.MAILGUN_DOMAIN}>`,
       to: [email],
       subject,
       text,
     });
+    return response;
   } catch (error) {
     console.error("Error sending email:", error);
-    throw new Error("Email sending failed");
+    throw new Error("Failed to send email");
   }
 };
 
@@ -51,8 +52,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(400).json({ error: "Failed to delete ticket" });
     }
   } else if (method === "POST") {
-    // Проверка данных в запросе
     const { email, message } = req.body;
+
+    // Проверка данных в запросе
     if (!message || typeof message !== "string" || message.trim() === "") {
       return res.status(400).json({ error: "Message cannot be empty" });
     }
@@ -60,7 +62,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       // Отправка ответа на email пользователя
       await sendEmailReply(email, "Re: Ваше обращение", message.trim());
-
       res.status(200).json({ message: "Reply sent successfully" });
       console.log("Received message:", message.trim());
     } catch (error) {
