@@ -116,9 +116,10 @@ text{
   flex-direction: column;
   width: 320px;
   gap: 20px;
-  margin-left: 2%;
+  margin-left: 15%;
   margin-top: 60px;
 }
+
 
 input{
   outline: none;
@@ -183,6 +184,12 @@ h1{
   }
 }
 
+@media(max-width: 420px){
+  .form-ticket{
+    margin-left: 4%;
+  }
+}
+
 input, textarea{
   background: none;
   border: 1px solid #000;
@@ -198,3 +205,6 @@ input::placeholder, textarea::placeholder{
 }
 
 
+.css-vbm0bs{
+  background-color: #E0AE9B;
+}
