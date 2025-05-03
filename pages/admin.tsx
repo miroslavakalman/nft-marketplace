@@ -1,9 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import formData from "form-data";
-import Mailgun from "mailgun.js";
 import { useAddress, useConnect, useDisconnect } from "@thirdweb-dev/react";
-import Ticket from "../models/Ticket";
 
 interface Ticket {
   _id: string;
@@ -21,12 +18,6 @@ export default function AdminPanel() {
   const connect = useConnect();
   const disconnect = useDisconnect();
 
-  useEffect(() => {
-    if (address) {
-      setUserAddress(address);
-    }
-  }, [address]);
-
   const adminAddresses = [
     '0xA4A4Da700f0C538e5f4E6081233CeDCf63E513b1',
     '0xBB9D62A7d334c337aeD74fFb14807399FA70AbB0'
@@ -36,6 +27,12 @@ export default function AdminPanel() {
 
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [replyMessage, setReplyMessage] = useState<{ [id: string]: string }>({});
+
+  useEffect(() => {
+    if (address) {
+      setUserAddress(address);
+    }
+  }, [address]);
 
   useEffect(() => {
     const fetchTickets = async () => {
@@ -49,26 +46,6 @@ export default function AdminPanel() {
 
     fetchTickets();
   }, []);
-
-  const sendEmail = async (to: string, subject: string, text: string) => {
-    const mailgun = new Mailgun(formData);
-    const mg = mailgun.client({
-      username: "api",
-      key: process.env.NEXT_PUBLIC_MAILGUN_API_KEY!,
-    });
-
-    try {
-      const result = await mg.messages.create(process.env.NEXT_PUBLIC_MAILGUN_DOMAIN!, {
-        from: "Администратор EtherArt <admin@etherart.com>",
-        to: [to],
-        subject: subject,
-        text: text,
-      });
-      console.log("Email sent successfully:", result);
-    } catch (error) {
-      console.error("Error sending email:", error);
-    }
-  };
 
   const handleClose = async (id: string) => {
     try {
@@ -107,11 +84,11 @@ export default function AdminPanel() {
     }
 
     try {
-      await sendEmail(
-        ticket.email,
-        "Ответ на Ваше обращение",
-        replyMessage[ticketId] || "Сообщение пусто."
-      );
+      await axios.post(`/api/tickets/${ticketId}`, {
+        email: ticket.email,
+        message: replyMessage[ticketId] || "Сообщение пусто.",
+      });
+
       setReplyMessage((prev) => ({ ...prev, [ticketId]: "" }));
       console.log("Reply sent successfully.");
     } catch (error) {
@@ -141,27 +118,14 @@ export default function AdminPanel() {
         <tbody>
           {tickets.map((ticket) => (
             <tr key={ticket._id}>
-              <td style={{ border: "1px solid black", padding: "8px" }}>
-                {ticket._id}
-              </td>
-              <td style={{ border: "1px solid black", padding: "8px" }}>
-                {ticket.name}
-              </td>
-              <td style={{ border: "1px solid black", padding: "8px" }}>
-                {ticket.email}
-              </td>
-              <td style={{ border: "1px solid black", padding: "8px" }}>
-                {ticket.message}
-              </td>
-              <td style={{ border: "1px solid black", padding: "8px" }}>
-                {ticket.status}
-              </td>
+              <td style={{ border: "1px solid black", padding: "8px" }}>{ticket._id}</td>
+              <td style={{ border: "1px solid black", padding: "8px" }}>{ticket.name}</td>
+              <td style={{ border: "1px solid black", padding: "8px" }}>{ticket.email}</td>
+              <td style={{ border: "1px solid black", padding: "8px" }}>{ticket.message}</td>
+              <td style={{ border: "1px solid black", padding: "8px" }}>{ticket.status}</td>
               <td style={{ border: "1px solid black", padding: "8px" }}>
                 {ticket.status === "open" ? (
-                  <button
-                    onClick={() => handleClose(ticket._id)}
-                    style={{ marginRight: "5px" }}
-                  >
+                  <button onClick={() => handleClose(ticket._id)} style={{ marginRight: "5px" }}>
                     Закрыть
                   </button>
                 ) : (

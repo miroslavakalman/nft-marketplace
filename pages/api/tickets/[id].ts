@@ -1,29 +1,25 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import dbConnect from "../../../utils/dbConnect";
-import formData from "form-data";
-import Mailgun from "mailgun.js";
-import Ticket from "../../../models/Ticket"; // Модель тикета
+import Ticket from "../../../models/Ticket";
+import nodemailer from "nodemailer";
 
-// Создаем Mailgun клиент
-const mailgun = new Mailgun(formData);
-const mg = mailgun.client({
-  username: "api",
-  key: process.env.NEXT_PUBLIC_MAILGUN_API_KEY!,
-});
-
-// Функция для отправки email
 const sendEmailReply = async (email: string, subject: string, text: string) => {
-  try {
-    await mg.messages.create(process.env.MAILGUN_DOMAIN!, {
-      from: `Администратор EtherArt <postman@${process.env.MAILGUN_DOMAIN}>`, // Указываем отправителя
-      to: [email],
-      subject,
-      text,
-    });
-  } catch (error) {
-    console.error("Error sending email:", error);
-    throw new Error("Email sending failed");
-  }
+  const transporter = nodemailer.createTransport({
+    host: "smtp.mail.ru",
+    port: 465,
+    secure: true,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+
+  await transporter.sendMail({
+    from: `${process.env.SMTP_USER}>`,
+    to: email,
+    subject,
+    text,
+  });
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
@@ -33,7 +29,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   await dbConnect();
 
   if (method === "PUT") {
-    // Обновление статуса тикета на "closed"
     try {
       const updatedTicket = await Ticket.findByIdAndUpdate(id, { status: "closed" }, { new: true });
       res.status(200).json(updatedTicket);
@@ -42,7 +37,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(400).json({ error: "Failed to close ticket" });
     }
   } else if (method === "DELETE") {
-    // Удаление тикета
     try {
       await Ticket.findByIdAndDelete(id);
       res.status(200).json({ message: "Ticket deleted successfully" });
@@ -51,20 +45,27 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       res.status(400).json({ error: "Failed to delete ticket" });
     }
   } else if (method === "POST") {
-    // Проверка данных в запросе
     const { email, message } = req.body;
+
+    if (!email || typeof email !== "string" || email.trim() === "") {
+      return res.status(400).json({ error: "Email is required" });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: "Invalid email address" });
+    }
+
     if (!message || typeof message !== "string" || message.trim() === "") {
       return res.status(400).json({ error: "Message cannot be empty" });
     }
 
     try {
-      // Отправка ответа на email пользователя
-      await sendEmailReply(email, "Re: Ваше обращение", message.trim());
-
+      await sendEmailReply(email.trim(), "Re: Ваше обращение", message.trim());
       res.status(200).json({ message: "Reply sent successfully" });
-      console.log("Received message:", message.trim());
+      console.log("Reply sent to:", email.trim());
     } catch (error) {
-      console.error("Error handling request:", error);
+      console.error("Error sending reply:", error);
       res.status(400).json({ error: "Failed to send reply" });
     }
   } else {
