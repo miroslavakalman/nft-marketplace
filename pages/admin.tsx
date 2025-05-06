@@ -78,23 +78,31 @@ export default function AdminPanel() {
 
   const handleReplySubmit = async (ticketId: string) => {
     const ticket = tickets.find((t) => t._id === ticketId);
+    const message = replyMessage[ticketId]?.trim();
+  
     if (!ticket) {
-      console.error("Ticket not found");
+      console.error("❌ Ticket not found for ID:", ticketId);
       return;
     }
-
+  
+    if (!ticket.email || !message) {
+      console.error("❌ Missing email or message", { email: ticket.email, message });
+      return;
+    }
+  
     try {
-      await axios.post(`/api/tickets/${ticketId}`, {
+      const response = await axios.post(`/api/tickets/${ticketId}`, {
         email: ticket.email,
-        message: replyMessage[ticketId] || "Сообщение пусто.",
+        message,
       });
-
+  
+      console.log("✅ Reply sent", response.data);
       setReplyMessage((prev) => ({ ...prev, [ticketId]: "" }));
-      console.log("Reply sent successfully.");
     } catch (error) {
       console.error("Error replying to ticket:", error);
     }
   };
+  
 
   if (!isAdmin) {
     return <p>У вас нет доступа к панели администратора. Пожалуйста, подключитесь как администратор.</p>;
