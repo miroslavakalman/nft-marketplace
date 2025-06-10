@@ -26,6 +26,7 @@ export default function NFTComponent({ nft }: Props) {
             tokenId: nft.metadata.id,
         });
 
+        
     return (
         <Flex direction={"column"} backgroundColor={"#EEE"} justifyContent={"center"} padding={"2.5"} borderRadius={"6px"} borderColor={"lightgray"} borderWidth={1}>
             <Box>
