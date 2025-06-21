@@ -148,7 +148,7 @@ h1{
   }
 }
 
-@media (min-width: 340px) and (max-width: 1024px) {
+@media (min-width: 320px) and (max-width: 1024px) {
   .heading-ether{
     font-size: 80px;
   }
@@ -163,11 +163,13 @@ h1{
   .css-1lu5iqd, .css-w0xf43{
     display: block !important;
     width: 70%;
-
+      .css-vbm0bs{
+    display: block;
+  }
   }
 }
 
-@media (max-width: 340px) {
+@media (max-width: 320px) {
   .heading-ether{
     font-size: 28px !important;
   }
