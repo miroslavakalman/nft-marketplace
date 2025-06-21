@@ -182,15 +182,14 @@ h1{
     width: 70%;
     
   }
-
-  .css-vbm0bs{
-    display: block;
-  }
 }
 
 @media(max-width: 420px){
   .form-ticket{
     margin-left: 4%;
+  }
+  .css-vbm0bs{
+    display: block;
   }
 }
 
