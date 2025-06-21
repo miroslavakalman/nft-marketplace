@@ -100,10 +100,11 @@ export default function AdminPanel() {
     return <p>У вас нет доступа к панели администратора. Пожалуйста, подключитесь как администратор.</p>;
   }
 
-  return (
+ return (
     <div style={{ padding: "20px" }}>
       <h1>Admin Panel</h1>
-      <table style={{ width: "100%", borderCollapse: "collapse" }}>
+            <div className="desktop-table" style={{ overflowX: "auto" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse", minWidth: "650px" }}>
         <thead>
           <tr>
             <th style={{ border: "1px solid black", padding: "8px" }}>ID</th>
@@ -146,6 +147,52 @@ export default function AdminPanel() {
           ))}
         </tbody>
       </table>
+      </div>
+       <div className="mobile-table">
+        {tickets.map((ticket) => (
+          <div key={ticket._id} style={{
+            border: "1px solid #000",
+            borderRadius: "5px",
+            padding: "10px",
+            marginBottom: "15px"
+          }}>
+            <div><strong>ID:</strong> {ticket._id}</div>
+            <div><strong>Имя:</strong> {ticket.name}</div>
+            <div><strong>Email:</strong> {ticket.email}</div>
+            <div><strong>Сообщение:</strong> {ticket.message}</div>
+            <div><strong>Статус:</strong> {ticket.status}</div>
+            
+            <div style={{ margin: "10px 0", display: "flex", gap: "5px" }}>
+              {ticket.status === "open" ? (
+                <button onClick={() => handleClose(ticket._id)} style={{ flex: 1 }}>
+                  Закрыть
+                </button>
+              ) : (
+                <span style={{ flex: 1, textAlign: "center" }}>Закрыто</span>
+              )}
+              <button onClick={() => handleDelete(ticket._id)} style={{ flex: 1 }}>
+                Удалить
+              </button>
+            </div>
+            
+            <div>
+              <input
+                type="text"
+                value={replyMessage[ticket._id] || ""}
+                onChange={handleReplyChange(ticket._id)}
+                placeholder="Введите ответ..."
+                style={{ width: "100%", marginBottom: "5px" }}
+              />
+              <button 
+                onClick={() => handleReplySubmit(ticket._id)}
+                style={{ width: "100%" }}
+              >
+                Отправить
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
